@@ -7,11 +7,8 @@
     <title>Princess Touch</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
-
     <link href="https://fonts.googleapis.com/css?family=Aboreto" rel="stylesheet">
-    <link rel="icon" href="images/trylogo.jpg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
 </head>
 
 <body>
@@ -24,9 +21,9 @@
 
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-6 gap-4">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Trending</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shop.php">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="trending.php">Trending</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
 
@@ -35,10 +32,15 @@
                             <img src="images/searching.png" alt="" class="icon">
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item position-relative">
                         <a class="nav-link" href="#">
                             <img src="images/addtocart.png" alt="" class="icon">
+                            <span id="cartCount"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning d-none">
+                                0
+                            </span>
                         </a>
+                    </li>
 
                     <li class="nav-item"><a class="nav-link" href="#">Log in</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
@@ -48,6 +50,7 @@
     </nav>
 
     <hr class="navbar-line">
+
 
     <section class="hero">
         <div class="container">
@@ -163,7 +166,10 @@
                         <h6 class="fw-semibold">Soft Pinch Dewy Liquid Blush Mini</h6>
                         <p class="fw-bold mb-0">₱1,200.00 <span
                                 class="text-decoration-line-through text-secondary fw-normal">₱1,500.00</span></p>
-                        <i class="bi bi-heart"></i>
+                        <div>
+                            <i class="bi bi-heart fs-4 text-secondary me-2" onclick="toggleHeart(this)"></i>
+                            <i class="bi bi-cart fs-4 text-secondary" onclick="addToCart(this)"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -173,7 +179,10 @@
                         <h6 class="fw-semibold">New Vinopure Purifying Gel Cleanser</h6>
                         <p class="fw-bold mb-0">₱1,600.00 <span
                                 class="text-decoration-line-through text-secondary fw-normal">₱1,700.00</span></p>
-                        <i class="bi bi-heart"></i>
+                        <div>
+                            <i class="bi bi-heart fs-4 text-secondary me-2" onclick="toggleHeart(this)"></i>
+                            <i class="bi bi-cart fs-4 text-secondary" onclick="addToCart(this)"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -183,7 +192,10 @@
                         <h6 class="fw-semibold">Vanish Seamless Finish Foundation Brush</h6>
                         <p class="fw-bold mb-0">₱3,500.00 <span
                                 class="text-decoration-line-through text-secondary fw-normal">₱4,500.00</span></p>
-                        <i class="bi bi-heart"></i>
+                        <div>
+                            <i class="bi bi-heart fs-4 text-secondary me-2" onclick="toggleHeart(this)"></i>
+                            <i class="bi bi-cart fs-4 text-secondary" onclick="addToCart(this)"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -387,15 +399,15 @@
                     <h4><span class="fw-bold">Princess Touch</span> offers gentle yet luxurious skincare made with
                         nature’s finest ingredients and backed by science. Our mission is to illuminate, nourish, and
                         restore your natural glow — helping every skin type feel confident, radiant, and cared for.</h4>
-                    <button class="footer-btn mt-4">Explore more</button>
+                    <a href="shop.php" class="footer-btns mt-4">Explore More</a>
                 </div>
 
                 <div class="col-lg-4 text-lg-end">
                     <ul class="list-unstyled mb-4">
                         <li><a href="#">About Us</a></li>
-                        <li><a href="#">Shop</a></li>
+                        <li><a href="shop.php">Shop</a></li>
                         <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Trending</a></li>
+                        <li><a href="trending.php">Trending</a></li>
                     </ul>
 
                     <ul class="list-unstyled social-links">
@@ -408,9 +420,9 @@
 
             <hr class="footer-line mt-4 mb-3">
             <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between text-white-50 small">
-                <a href="#"><span>Terms of Service</span></a>
+                <a href="ToS.php"><span>Terms of Service</span></a>
                 <span>© 2025 Princess Touch. All rights reserved.</span>
-                <a href="#"><span>Privacy Policy</span></a>
+                <a href="policy.php"><span>Privacy Policy</span></a>
             </div>
         </div>
     </footer>
@@ -418,13 +430,46 @@
     <script src="js/bootstrap.js"></script>
 
     <script>
-    document.querySelectorAll('.faq-question').forEach(button => {
-        button.addEventListener('click', () => {
-            const faqItem = button.parentElement;
-            faqItem.classList.toggle('active');
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+            });
         });
-    });
+
+        let cartCount = 0;
+
+        function toggleHeart(element) {
+            element.classList.toggle('bi-heart');
+            element.classList.toggle('bi-heart-fill');
+            element.classList.toggle('text-danger');
+        }
+
+        function addToCart(icon) {
+
+            if (icon.classList.contains('bi-cart-fill')) {
+                icon.classList.remove('bi-cart-fill', 'text-warning');
+                icon.classList.add('bi-cart');
+                cartCount--;
+            } else {
+
+                icon.classList.remove('bi-cart');
+                icon.classList.add('bi-cart-fill', 'text-warning');
+                cartCount++;
+            }
+
+            const cartBadge = document.getElementById('cartCount');
+            if (cartBadge) {
+                cartBadge.textContent = cartCount;
+                if (cartCount > 0) {
+                    cartBadge.classList.remove('d-none');
+                } else {
+                    cartBadge.classList.add('d-none');
+                }
+            }
+        }
     </script>
+
 </body>
 
 </html>
